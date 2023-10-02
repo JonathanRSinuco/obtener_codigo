@@ -45,6 +45,8 @@ class RDModule:
 
         for line in access_codes:
             code = line.strip()
+            if len(code) != 3:
+                raise ValueError("Los codigos de acceso deben contener 3 caracteres")
             for i in range(len(code)):
                 digit = code[i]
                 if digit not in self.__constraints:

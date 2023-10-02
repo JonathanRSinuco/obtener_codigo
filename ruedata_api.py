@@ -1,4 +1,5 @@
 from flask import Flask, jsonify, request
+from http import HTTPStatus
 from io import BytesIO
 from ruedata_module import RDModule
 from waitress import serve
@@ -30,7 +31,7 @@ def upload_file(filename):
 
     # Verifica si el archivo tiene la extensión .txt
     if not filename.endswith(".txt"):
-        return "Tipo de archivo no válido", 400
+        return "Tipo de archivo no válido", HTTPStatus.BAD_REQUEST
 
     # Lee el contenido del archivo desde la solicitud
     file_data = request.data
@@ -42,14 +43,25 @@ def upload_file(filename):
     text_content = file_stream.read().decode("utf-8")
 
     rd_module = RDModule()
-    rd_module.load_access_codes(text_content)
-    code = rd_module.find_code()
+
+    try:
+        rd_module.load_access_codes(text_content)
+    except ValueError as e:
+        return_data = {"error": str(e)}
+        return jsonify(return_data), HTTPStatus.BAD_REQUEST
+
+    try:
+        code = rd_module.find_code()
+    except ValueError as e:
+        return_data = {"error": str(e)}
+        return jsonify(return_data), HTTPStatus.BAD_REQUEST
 
     return_data = {"code": code}
 
-    return jsonify(return_data), 200
+    return jsonify(return_data), HTTPStatus.OK
 
 
 if __name__ == "__main__":
-    print("Iniciando servicio...")
-    serve(app, host="0.0.0.0", port=5000)
+    PORT = 5000
+    print(f"Iniciando servicio en puerto {PORT}")
+    serve(app, host="0.0.0.0", port=PORT)

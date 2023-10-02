@@ -70,7 +70,6 @@ class RDModule:
         """
         code = ""
         constraints = self.__constraints.copy()  # Copiamos diccionario original
-        print(constraints)
         while constraints:
             # Buscamos un dígito que no tenga restricciones pendientes
             no_constraints_digits = [

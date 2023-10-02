@@ -78,7 +78,7 @@ class RDModule:
                 digit for digit in constraints if not constraints[digit]
             ]
             if not no_constraints_digits:
-                raise ValueError("No se puede determinar un código secreto válido.")
+                return None
 
             # Tomamos el dígito disponible y lo agregamos al código
             digit = no_constraints_digits[0]

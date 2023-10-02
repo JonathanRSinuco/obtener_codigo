@@ -7,6 +7,18 @@ from waitress import serve
 app = Flask(__name__)
 
 
+@app.errorhandler(HTTPStatus.NOT_IMPLEMENTED)
+def not_implemented_error(error):
+    return_data = {"message": "Metodo no implementado"}
+    return jsonify(return_data), HTTPStatus.NOT_IMPLEMENTED
+
+
+@app.errorhandler(HTTPStatus.METHOD_NOT_ALLOWED)
+def not_implemented_error(error):
+    return_data = {"message": "Metodo no implementado"}
+    return jsonify(return_data), HTTPStatus.METHOD_NOT_ALLOWED
+
+
 @app.route("/api/upload/<filename>", methods=["PUT"])
 def upload_file(filename):
     """
@@ -57,6 +69,8 @@ def upload_file(filename):
         return jsonify(return_data), HTTPStatus.BAD_REQUEST
 
     return_data = {"code": code}
+    if not code:
+        return_data.update(error="No fue posible obtener codigo secreto")
 
     return jsonify(return_data), HTTPStatus.OK
 

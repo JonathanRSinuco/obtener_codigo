@@ -54,7 +54,7 @@ class RDModule:
                         digit
                     ] = (
                         set()
-                    )  # Creamos un conjunto para almacenar los dígitos que deben preceder a este dígito
+                    )  # Creamos un conjunto para almacenar los dígitos que deben proceder a este dígito
                 for j in range(i + 1, len(code)):
                     self.__constraints[digit].add(code[j])
 

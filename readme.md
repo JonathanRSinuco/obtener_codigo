@@ -63,3 +63,11 @@ filename (str): El nombre del archivo de texto que se va a procesar.
         "error": <str: Descripción del error>
     }
 ```
+
+### Prueba
+para realizar una prueba usando cURL
+```
+curl --location --request PUT 'http://URL/api/upload/test.txt' \
+--header 'Content-Type: text/plain' \
+--data '@/C:/path_del archivo/test.txt'   
+```
